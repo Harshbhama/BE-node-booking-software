@@ -1,16 +1,16 @@
-const express = require("express")
-const application = express()
-const bodyparser = require("body-parser")
-const cors = require('cors');
-application.use(bodyparser.urlencoded({
-    extended: true
-}));
-require('dotenv').config();
-var corsOptions = {
-    origin: 'http://localhost:3000' };
-application.use(cors(corsOptions));
-application.use(bodyparser.json({limit: '2mb'}))
+const express = require('express')
+const { createProxyMiddleware } = require('http-proxy-middleware')
+const app = express();
 
-application.listen(process.env.API_PORT, () => {
-    console.log("server started at port ", process.env.API_PORT);
+const routes = {
+    '/iternary': 'http://localhost:4001'
+}
+for (const route in routes){
+  const target = routes[route]
+  app.use(route, createProxyMiddleware({target}))
+}
+
+const PORT = 4000
+app.listen(PORT, () => {
+  console.log("Api gateway started at", PORT);
 })
