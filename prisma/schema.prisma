@@ -37,10 +37,28 @@ model friend_requests {
 }
 
 model agent_iternary {
-  iternary_id String @id @default(cuid()) 
-  user   user?   @relation(fields: [userId], references: [id])
-  userId String? @map(name: "user_id")
-  title String?
+  iternary_id String   @id @default(cuid())
+  user        user?    @relation(fields: [userId], references: [id])
+  userId      String?  @map(name: "user_id")
+  title       String?
   description String?
-  images String[]
+  images      String[]
+}
+
+model user_chat {
+  unique_table_transaction String         @id @default(cuid())
+  first_user               String         @unique
+  second_user              String         @unique
+  room_no                  Int            @unique @default(autoincrement())
+  chat_check               Boolean
+  user_message             user_message[]
+}
+
+model user_message {
+  id                                String     @id @default(cuid())
+  user_chat                         user_chat? @relation(fields: [user_chat_unique_table_transaction], references: [unique_table_transaction])
+  user_chat_unique_table_transaction String?
+  message String
+  createdAt          DateTime  @default(now())
+  user String         @unique
 }

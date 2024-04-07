@@ -12,8 +12,6 @@ io.on("connection", (socket) => {
         }else{
             io.emit("message", message, undefined, userId)
         }
-        
-        console.log(message, undefined , roomName);
     })
     socket.on("disconnect", () => {
         console.log("User disconnected")
