@@ -18,7 +18,7 @@ model user {
   Friends        friends[]
   FriendRequests friend_requests[]
   profilePic     String
-  isAgent        Boolean
+  isAgent        Boolean?
   iternaries     agent_iternary[]
 }
 
@@ -60,5 +60,5 @@ model user_message {
   user_chat_unique_table_transaction String?
   message String
   createdAt          DateTime  @default(now())
-  user String         @unique
+  userId String         @unique
 }

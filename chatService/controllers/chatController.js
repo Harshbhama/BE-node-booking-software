@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const { createClient } = require('redis')
-const { createChatTransaction, addChatMsg } = require("../db/chatDb");
+const { createChatTransaction, addChatMsg, getMessageOnTransactionId } = require("../db/chatDb");
 const client = createClient();
 client.connect();
 client.on('error', err => console.log('Redis Client Error', err));
@@ -40,5 +40,22 @@ router.post('/addChatMsgService', async (req, res) => {
     })
   }
 })
+router.get('/getUserMessage', async (req, res) => {
+  const transactionId = req.get("user_chat_unique_table_transaction")
+  try{
+    let result = await getMessageOnTransactionId(transactionId)
+    res.json({
+      error: false,
+      message: 'Data fetched successfully',
+      result: result
+    })
+  }catch(err){
+    res.json({
+      error: true,
+      message: err
+    })
+  }
+})
+
 
 module.exports = router;

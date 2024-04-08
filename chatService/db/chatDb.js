@@ -35,7 +35,7 @@ const addChatMsg = (user_chat_unique_table_transaction, user, message) => {
         data: {
           message: message,
           user_chat_unique_table_transaction: user_chat_unique_table_transaction,
-          user: user
+          userId: user
         }
       })
       resolve(result);
@@ -46,7 +46,21 @@ const addChatMsg = (user_chat_unique_table_transaction, user, message) => {
   })
 }
 
+const getMessageOnTransactionId = (transactionId) => {
+  return new Promise(async (resolve, reject) => {
+    try{
+      let result = await prisma.user_message.findMany({
+        user_chat_unique_table_transaction: transactionId 
+      })
+      resolve(result);
+    }catch(err){
+      reject(err);
+    }
+  })
+}
+
 module.exports = {
   createChatTransaction: createChatTransaction,
-  addChatMsg: addChatMsg
+  addChatMsg: addChatMsg,
+  getMessageOnTransactionId: getMessageOnTransactionId
 };
