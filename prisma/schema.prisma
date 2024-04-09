@@ -47,8 +47,8 @@ model agent_iternary {
 
 model user_chat {
   unique_table_transaction String         @id @default(cuid())
-  first_user               String         @unique
-  second_user              String         @unique
+  first_user               String        
+  second_user              String       
   room_no                  Int            @unique @default(autoincrement())
   chat_check               Boolean
   user_message             user_message[]
@@ -60,5 +60,5 @@ model user_message {
   user_chat_unique_table_transaction String?
   message String
   createdAt          DateTime  @default(now())
-  userId String         @unique
+  userId String     
 }
