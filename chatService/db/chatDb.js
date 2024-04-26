@@ -63,8 +63,41 @@ const getMessageOnTransactionId = (transactionId) => {
   })
 }
 
+const setOnlineOfflineUserDb = async (userId, condition) => {
+  return new Promise (async (resolve, reject) => {
+    try{
+      let data = await prisma.user.update({
+        where: {
+          id: userId
+        },
+        data: {
+          isOnline: condition
+        }
+      })
+      console.log(data);
+      resolve(data)
+    }catch(err){
+      console.log(err);
+      reject(err);
+    }
+  })
+}
+
+const checkForOnlineUsers = async (userId) => {
+  return new Promise (async (resolve, reject) => {
+    try{
+      let data = await prisma.$queryRaw`select is_online, id from public.user`;
+      resolve(data);
+    }catch(err) {
+      reject(err);
+    } 
+  })
+}
+
 module.exports = {
   createChatTransaction: createChatTransaction,
   addChatMsg: addChatMsg,
-  getMessageOnTransactionId: getMessageOnTransactionId
+  getMessageOnTransactionId: getMessageOnTransactionId,
+  setOnlineOfflineUserDb: setOnlineOfflineUserDb,
+  checkForOnlineUsers: checkForOnlineUsers
 };

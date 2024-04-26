@@ -20,6 +20,7 @@ model user {
   profilePic     String
   isAgent        Boolean?
   iternaries     agent_iternary[]
+  isOnline       Boolean? @map(name: "is_online")
 }
 
 model friends {

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const { createClient } = require('redis')
-const { createChatTransaction, addChatMsg, getMessageOnTransactionId } = require("../db/chatDb");
+const { createChatTransaction, addChatMsg, getMessageOnTransactionId, checkForOnlineUsers } = require("../db/chatDb");
 const client = createClient();
 client.connect();
 client.on('error', err => console.log('Redis Client Error', err));
@@ -56,6 +56,20 @@ router.get('/getUserMessage', async (req, res) => {
     })
   }
 })
-
+router.get('/getOnlineUsers', async(req, res) => {
+  let userId;
+  try{
+    let result = await checkForOnlineUsers();
+    res.json({
+      error: false,
+      result: result
+    })
+  }catch(err){
+    res.json({
+      error: true,
+      msg: err
+    })
+  }
+})
 
 module.exports = router;

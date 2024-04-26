@@ -68,6 +68,5 @@ router.get("/listIternary", async (req, res) => {
       });
 
     });
-  
 });
 module.exports = router;
